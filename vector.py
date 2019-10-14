@@ -7,21 +7,21 @@ class Vector:
 		self.x = x
 		self.y = y
 
-	def minus(v):
-		return Vector(x - v.x, y - v.y)
+	def __sub__(self, v):
+		return Vector(self.x - v.x, self.y - v.y)
 
-	def add(v):
-		return Vector(x + v.x, y + v.y)
+	def __add__(self, v):
+		return Vector(self.x + v.x, self.y + v.y)
 
-	def cross(v):
-		return x * v.y - v.x * y
+	def cross(self, v):
+		return self.x * v.y - v.x * self.y
 
 	def dot(v):
-		return x * v.x + v.y * y
+		return self.x * v.x + v.y * self.y
 
-	def get_angle():
-		return atan2(y, x)
+	def get_angle(self):
+		return atan2(self.y, self.x)
 
-	def get_length():
-		return (x ** 2 + y ** 2) ** 0.5
+	def get_length(self):
+		return (self.x ** 2 + self.y ** 2) ** 0.5
 

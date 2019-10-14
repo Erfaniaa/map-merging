@@ -1,4 +1,5 @@
 import math
+from vector import Vector
 
 
 class Node:
@@ -7,6 +8,12 @@ class Node:
         self.index = index
         self.x = x
         self.y = y
+
+    def __str__(self):
+        return str(self.index) + " " + str(self.x) + " " + str(self.y)
+
+    def get_pos_vector(self):
+        return Vector(self.x, self.y)
 
     def distance(self, node):
         dx = node.x - self.x

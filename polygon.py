@@ -6,7 +6,7 @@ import numpy as np
 class Polygon:
     nodes = None  # type: list[Node]
 
-    TF_POINTS = 1000
+    TF_POINTS = 10000
 
     def __init__(self, nodes):
         self.nodes = nodes
