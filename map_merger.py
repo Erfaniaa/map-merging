@@ -1,6 +1,13 @@
 from graph_node import Node
 import math
 import numpy as np
+from graph_generator import GraphGenerator
+from polygons import Polygons
+from graph_edge import Edge
+from bipartite_graph import BipartiteGraph
+import networkx as nx
+import matplotlib.pyplot as plt
+from copy import deepcopy
 
 
 class MapMerger:
@@ -12,10 +19,10 @@ class MapMerger:
         self.nx_graph1 = self.graph1.get_nx_graph()
         self.graph_generator.remove_random_edges(3, 7)
         self.graph_generator.change_all_nodes_position(2)
-        self.graph2 = graph_generator.graph
+        self.graph2 = self.graph_generator.graph
         self.nx_graph2 = self.graph2.get_nx_graph()
-        part_one = self.graph1.nodes.copy()
-        part_two = self.graph2.nodes.copy()
+        part_one = [deepcopy(node) for node in self.graph1.nodes]
+        part_two = [deepcopy(node) for node in self.graph2.nodes]
         edges = []
         for node in part_one:
             node.index = node.index * 10 + 0
@@ -27,9 +34,12 @@ class MapMerger:
             turning_function1 = node1_adjacent_faces.get_all_polygons_turning_function()
             for node2 in part_two:
                 node2_prev_index = node2.index // 10
+                node2_adjacent_faces = Polygons(polygons=self.graph2.get_node_adjacent_faces(node2_prev_index))
                 turning_function2 = node2_adjacent_faces.get_all_polygons_turning_function()
                 edges.append(Edge(node1.index, node2.index, self._turning_functions_similarity(turning_function1, turning_function2)))
+        print(edges)
         self.bipartite_graph = BipartiteGraph(part_one, part_two, edges)
+        self.bipartite_nx_graph = self.bipartite_graph.get_maximum_weighted_matching()
 
     def _turning_functions_similarity(self, turning_function1, turning_function2):
         length = min(len(turning_function1), len(turning_function2))
@@ -47,6 +57,7 @@ class MapMerger:
         plt.figure(2)
         nx.draw(self.nx_graph2, pos2, with_labels=True)
         plt.figure(3)
+        nx.draw(self.bipartite_nx_graph, pos3, with_labels=True)
         plt.show()
 
 

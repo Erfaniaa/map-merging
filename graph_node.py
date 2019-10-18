@@ -12,6 +12,9 @@ class Node:
     def __str__(self):
         return str(self.index) + " " + str(self.x) + " " + str(self.y)
 
+    def __repr__(self):
+        return str(self.index) + " " + str(self.x) + " " + str(self.y)
+
     def get_pos_vector(self):
         return Vector(self.x, self.y)
 

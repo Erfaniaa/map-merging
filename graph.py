@@ -1,11 +1,13 @@
 import networkx as nx
 from vector import Vector
+from polygon import Polygon
 
 class Graph:
 
     def __init__(self, nodes=None, edges=None):
         self.nodes = []
         self.edges = []
+        self.index_to_node = {}
         self.node_neighbors = {}
         if nodes:
             self.nodes = nodes
@@ -44,6 +46,7 @@ class Graph:
 
     def add_node(self, node):
         self.nodes.append(node)
+        self.index_to_node[node.index] = node
 
     def get_nx_graph(self):
         graph = nx.Graph()
@@ -65,11 +68,11 @@ class Graph:
         first_edge = edge
         face_edges = []
         edge = self.get_next_edge_in_face(edge[0], edge[1])
-        face_edges.append(edge[0])
+        face_edges.append(self.index_to_node[edge[0]])
         while edge and edge != first_edge:
             edge = self.get_next_edge_in_face(edge[0], edge[1])
-            face_edges.append(edge[0])
-        return face_edges
+            face_edges.append(self.index_to_node[edge[0]])
+        return Polygon(nodes=face_edges)
 
     def get_next_edge_in_face(self, node, prev_node):
         node_neighbors = self.node_neighbors[node].copy()

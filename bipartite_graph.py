@@ -7,6 +7,7 @@ class BipartiteGraph:
         self.nodes1 = []
         self.nodes2 = []
         self.edges = []
+        self.index_to_node = {}
         self.node_neighbors = {}
         if nodes1:
             self.nodes1 = nodes1
@@ -47,9 +48,11 @@ class BipartiteGraph:
 
     def add_node_to_part_one(self, node):
         self.nodes1.append(node)
+        self.index_to_node[node.index] = node
 
     def add_node_to_part_two(self, node):
         self.nodes2.append(node)
+        self.index_to_node[node.index] = node
 
     def get_maximum_weighted_matching(self):
         graph = nx.Graph()
@@ -58,13 +61,12 @@ class BipartiteGraph:
             graph.add_node(node.index, pos=(0, idx))
             matching_graph.add_node(node.index, pos=(0, idx))
         for idx, node in enumerate(self.nodes2):
-            graph.add_node(node.index, pos=(2, idx))
-            matching_graph.add_node(node.index, pos=(2, idx))
+            graph.add_node(node.index, pos=(20, idx))
+            matching_graph.add_node(node.index, pos=(20, idx))
         for edge in self.edges:
             graph.add_edge(edge.node1_index, edge.node2_index, weight=edge.weight)
         matching_edges_set = nx.max_weight_matching(graph, maxcardinality=True)
         for node1, node2 in matching_edges_set:
-        print(matching_edges_set)
             matching_graph.add_edge(node1, node2)
         return matching_graph
 
@@ -73,7 +75,7 @@ class BipartiteGraph:
         for idx, node in enumerate(self.nodes1):
             graph.add_node(node.index, pos=(0, idx))
         for idx, node in enumerate(self.nodes2):
-            graph.add_node(node.index, pos=(2, idx))
+            graph.add_node(node.index, pos=(20, idx))
         for edge in self.edges:
             graph.add_edge(edge.node1_index, edge.node2_index, weight=edge.weight)
         return graph
